@@ -3,7 +3,7 @@ package edu.grinnell.csc207.util;
 /**
  * An implementation of two-dimensional matrices.
  *
- * @author Your Name Here
+ * @author Natalie Nardone
  * @author Samuel A. Rebelsky
  *
  * @param <T>
@@ -13,6 +13,21 @@ public class MatrixV0<T> implements Matrix<T> {
   // +--------+------------------------------------------------------
   // | Fields |
   // +--------+
+
+  /**
+   * The contents of the matrix.
+   */
+  T[][] contents;
+
+  /**
+   * The width of the matrix.
+   */
+  int width;
+
+  /**
+   * The height of the matrix.
+   */
+  int height;
 
   // +--------------+------------------------------------------------
   // | Constructors |
@@ -33,7 +48,21 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If either the width or height are negative.
    */
   public MatrixV0(int width, int height, T def) {
-    // STUB
+    if ((width < 0) || (height < 0)) {
+      throw new NegativeArraySizeException();
+    } else {
+      this.width = width;
+      this.height = height;
+      contents = (T[][]) new Object[height][];
+      for (int i = 0; i < height; i++) {
+        contents[i] = (T[]) new Object[width];
+      } // for
+      for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+          contents[i][j] = def;
+        } // for
+      } // for
+    } // if/else
   } // MatrixV0(int, int, T)
 
   /**
@@ -70,7 +99,11 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If either the row or column is out of reasonable bounds.
    */
   public T get(int row, int col) {
-    return null;        // STUB
+    if ((row < 0) || (col < 0)) {
+      throw new IndexOutOfBoundsException();
+    } else {
+      return contents[row][col];
+    } // if/else
   } // get(int, int)
 
   /**
@@ -87,7 +120,11 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If either the row or column is out of reasonable bounds.
    */
   public void set(int row, int col, T val) {
-    // STUB
+    if ((row < 0) || (col < 0)) {
+      throw new IndexOutOfBoundsException();
+    } else {
+      contents[row][col] = val;
+    } // if/else
   } // set(int, int, T)
 
   /**
@@ -96,7 +133,7 @@ public class MatrixV0<T> implements Matrix<T> {
    * @return the number of rows.
    */
   public int height() {
-    return 5;   // STUB
+    return this.height;
   } // height()
 
   /**
@@ -105,7 +142,7 @@ public class MatrixV0<T> implements Matrix<T> {
    * @return the number of columns.
    */
   public int width() {
-    return 3;   // STUB
+    return this.width;
   } // width()
 
   /**
@@ -263,7 +300,28 @@ public class MatrixV0<T> implements Matrix<T> {
    * height, and equal elements; false otherwise.
    */
   public boolean equals(Object other) {
-    return this == other;       // STUB
+    if (other instanceof Matrix) {
+      Matrix otherMatrix = (Matrix) other;
+      // check if same height and width
+      if (this.height != otherMatrix.height()) {
+        return false;
+      } else if (this.width != otherMatrix.width()) {
+        return false;
+      } else {
+        // check if all contents are the same
+        for (int i = 0; i < this.height; i++) {
+          for (int j = 0; j < this.width; j++) {
+            if (!this.contents[i][j].equals(otherMatrix.get(i,j))) {
+              return false;
+            } // if
+          } // for
+        } // for
+        return true;
+      } // if/else
+    } else {
+      // If it's not a matrix, it's not equal.
+      return false;
+    } // if/else
   } // equals(Object)
 
   /**
