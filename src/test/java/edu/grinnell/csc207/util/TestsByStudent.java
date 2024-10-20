@@ -208,10 +208,20 @@ public class TestsByStudent {
     
   }
 
+  /**
+   * Make sure matrix can be cloned.
+   */
   @Test
   public void testClone() {
-    
-  }
+    Matrix<String> test1 = new MatrixV0<String>(3, 2);
+    test1.set(0, 0, "apple");
+    test1.set(0, 2, "orange");
+    test1.set(1, 1, "banana");
+
+    Matrix<String> test2 = test1.clone();
+    assertMatrixEquals(new String[][] {{"apple", null, "orange", null, "banana", null}}, test2,
+    "Matrix clones correctly");
+  } // testClone()
 
   /**
    * Make sure we can correctly check equality.
@@ -253,7 +263,5 @@ public class TestsByStudent {
    * methods to test: 
    * fillregion
    * fillline
-   * 
-   * clone
    */
 }

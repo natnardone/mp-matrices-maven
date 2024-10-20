@@ -155,7 +155,13 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the row is negative or greater than the height.
    */
   public void insertRow(int row) {
-    // STUB
+    T[] vals = (T[]) new Object[this.width];
+    java.util.Arrays.fill(vals, null);
+    try {
+      this.insertRow(row, vals);
+    } catch (ArraySizeException e) {
+      // should never reach this point
+    }
   } // insertRow(int)
 
   /**
@@ -172,7 +178,17 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the size of vals is not the same as the width of the matrix.
    */
   public void insertRow(int row, T[] vals) throws ArraySizeException {
-    // STUB
+    if ((row > this.height) || (row < 0)) {
+      throw new IndexOutOfBoundsException();
+    }
+    this.contents = java.util.Arrays.copyOf(this.contents, this.contents.length + 1);
+    // move all array elements after the row inserted
+    for (int i = this.height; i > row; i--) {
+      this.contents[i] = this.contents[i-1];
+    }
+    // new row contains specified values
+    this.contents[row] = vals;
+    this.height++;
   } // insertRow(int, T[])
 
   /**
@@ -185,7 +201,13 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the column is negative or greater than the width.
    */
   public void insertCol(int col) {
-    // STUB
+    T[] vals = (T[]) new Object[this.height];
+    java.util.Arrays.fill(vals, null);
+    try {
+      this.insertCol(col, vals);
+    } catch (ArraySizeException e) {
+      // should never reach this point
+    }
   } // insertCol(int)
 
   /**
@@ -202,7 +224,17 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the size of vals is not the same as the height of the matrix.
    */
   public void insertCol(int col, T[] vals) throws ArraySizeException {
-    // STUB
+    if ((col > this.width) || (col < 0)) {
+      throw new IndexOutOfBoundsException();
+    }
+    for (int i = 0; i < this.height; i++) {
+      this.contents[i] = java.util.Arrays.copyOf(this.contents[i], this.contents[i].length + 1);
+      for (int j = this.width; j > col; j--) {
+        this.contents[j] = this.contents[j-1];
+      }
+      this.contents[i][col] = vals[i];
+    }
+    this.width++;
   } // insertCol(int, T[])
 
   /**
@@ -215,7 +247,14 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the row is negative or greater than or equal to the height.
    */
   public void deleteRow(int row) {
-    // STUB
+    if ((row >= this.height) || (row < 0)) {
+      throw new IndexOutOfBoundsException();
+    }
+    this.height--;
+    for (int i = row; i < this.height; i++) {
+      this.contents[i] = this.contents[i+1];
+    }
+    this.contents = java.util.Arrays.copyOf(this.contents, this.contents.length - 1);
   } // deleteRow(int)
 
   /**
@@ -228,7 +267,16 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the column is negative or greater than or equal to the width.
    */
   public void deleteCol(int col) {
-    // STUB
+    if ((col >= this.width) || (col < 0)) {
+      throw new IndexOutOfBoundsException();
+    }
+    this.width--;
+    for (int i = 0; i < this.height; i++) {
+      for (int j = col; j < this.width; j++) {
+        this.contents[i][j] = this.contents[i][j+1];
+      }
+      this.contents[i] = java.util.Arrays.copyOf(this.contents[i], this.contents[i].length - 1);
+    }
   } // deleteCol(int)
 
   /**
@@ -287,7 +335,13 @@ public class MatrixV0<T> implements Matrix<T> {
    * @return a copy of the matrix.
    */
   public Matrix clone() {
-    return this;        // STUB
+    MatrixV0 copy = new MatrixV0(this.width, this.height);
+    for (int i = 0; i < this.height; i++) {
+      for (int j = 0; j < this.width; j++) {
+        copy.set(i, j, this.contents[i][j]);
+      }
+    }
+    return copy;
   } // clone()
 
   /**
