@@ -200,12 +200,78 @@ public class TestsByStudent {
 
   @Test
   public void testFillRegion() {
-    
+    Matrix<Integer> test = new MatrixV0<Integer>(3, 3);
+    test.set(0, 0, Integer.valueOf(0));
+    test.set(0, 1, Integer.valueOf(1));
+    test.set(0, 2, Integer.valueOf(2));
+    test.set(1, 0, Integer.valueOf(3));
+    test.set(1, 1, Integer.valueOf(4));
+    test.set(1, 2, Integer.valueOf(5));
+    test.set(2, 0, Integer.valueOf(6));
+    test.set(2, 1, Integer.valueOf(7));
+    test.set(2, 2, Integer.valueOf(8));
+
+    test.fillRegion(0, 0, 3, 3, Integer.valueOf(9));
+    assertMatrixEquals(new Integer[][] {{9,9,9,9,9,9,9,9,9}}, test, "Correctly fills entire matrix");
+
+    Matrix<Integer> test2 = new MatrixV0<Integer>(3, 3);
+    test2.set(0, 0, Integer.valueOf(0));
+    test2.set(0, 1, Integer.valueOf(1));
+    test2.set(0, 2, Integer.valueOf(2));
+    test2.set(1, 0, Integer.valueOf(3));
+    test2.set(1, 1, Integer.valueOf(4));
+    test2.set(1, 2, Integer.valueOf(5));
+    test2.set(2, 0, Integer.valueOf(6));
+    test2.set(2, 1, Integer.valueOf(7));
+    test2.set(2, 2, Integer.valueOf(8));
+
+    test2.fillRegion(1, 0, 3, 2, Integer.valueOf(9));
+    assertMatrixEquals(new Integer[][] {{0,1,2,9,9,5,9,9,8}}, test2, "Correctly fills part of matrix");
   }
 
   @Test
   public void testFillLine() {
-    
+    Matrix<Integer> test = new MatrixV0<Integer>(3, 3);
+    test.set(0, 0, Integer.valueOf(0));
+    test.set(0, 1, Integer.valueOf(1));
+    test.set(0, 2, Integer.valueOf(2));
+    test.set(1, 0, Integer.valueOf(3));
+    test.set(1, 1, Integer.valueOf(4));
+    test.set(1, 2, Integer.valueOf(5));
+    test.set(2, 0, Integer.valueOf(6));
+    test.set(2, 1, Integer.valueOf(7));
+    test.set(2, 2, Integer.valueOf(8));
+
+    test.fillLine(0,1,0,0,3,1, Integer.valueOf(9));
+    assertMatrixEquals(new Integer[][] {{0,9,2,3,9,5,6,9,8}}, test, "Correctly fills vertical line");
+
+    Matrix<Integer> test2 = new MatrixV0<Integer>(3, 3);
+    test2.set(0, 0, Integer.valueOf(0));
+    test2.set(0, 1, Integer.valueOf(1));
+    test2.set(0, 2, Integer.valueOf(2));
+    test2.set(1, 0, Integer.valueOf(3));
+    test2.set(1, 1, Integer.valueOf(4));
+    test2.set(1, 2, Integer.valueOf(5));
+    test2.set(2, 0, Integer.valueOf(6));
+    test2.set(2, 1, Integer.valueOf(7));
+    test2.set(2, 2, Integer.valueOf(8));
+
+    test2.fillLine(1, 0, 0, 0, 1, 3, Integer.valueOf(9));
+    assertMatrixEquals(new Integer[][] {{0,1,2,9,9,9,6,7,8}}, test2, "Correctly fills horizontal line");
+
+    Matrix<Integer> test3 = new MatrixV0<Integer>(3, 3);
+    test3.set(0, 0, Integer.valueOf(0));
+    test3.set(0, 1, Integer.valueOf(1));
+    test3.set(0, 2, Integer.valueOf(2));
+    test3.set(1, 0, Integer.valueOf(3));
+    test3.set(1, 1, Integer.valueOf(4));
+    test3.set(1, 2, Integer.valueOf(5));
+    test3.set(2, 0, Integer.valueOf(6));
+    test3.set(2, 1, Integer.valueOf(7));
+    test3.set(2, 2, Integer.valueOf(8));
+
+    test3.fillLine(0, 0, 1, 1, 3, 3, Integer.valueOf(9));
+    assertMatrixEquals(new Integer[][] {{9,1,2,3,9,5,6,7,9}}, test3, "Correctly fills diagonal line");
   }
 
   /**
@@ -258,10 +324,4 @@ public class TestsByStudent {
     assertEquals(false, test1.equals(test5));
   } // testEquals()
 
-
-  /*
-   * methods to test: 
-   * fillregion
-   * fillline
-   */
 }

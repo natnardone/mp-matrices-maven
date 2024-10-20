@@ -180,6 +180,8 @@ public class MatrixV0<T> implements Matrix<T> {
   public void insertRow(int row, T[] vals) throws ArraySizeException {
     if ((row > this.height) || (row < 0)) {
       throw new IndexOutOfBoundsException();
+    } else if (vals.length != this.width) {
+      throw new ArraySizeException();
     }
     this.contents = java.util.Arrays.copyOf(this.contents, this.contents.length + 1);
     // move all array elements after the row inserted
@@ -226,6 +228,8 @@ public class MatrixV0<T> implements Matrix<T> {
   public void insertCol(int col, T[] vals) throws ArraySizeException {
     if ((col > this.width) || (col < 0)) {
       throw new IndexOutOfBoundsException();
+    } else if (vals.length != this.height) {
+      throw new ArraySizeException();
     }
     for (int i = 0; i < this.height; i++) {
       this.contents[i] = java.util.Arrays.copyOf(this.contents[i], this.contents[i].length + 1);
@@ -298,7 +302,14 @@ public class MatrixV0<T> implements Matrix<T> {
    */
   public void fillRegion(int startRow, int startCol, int endRow, int endCol,
       T val) {
-    // STUB
+    if ((startRow < 0) || (startCol < 0) || (endRow > this.height) || (endCol > this.width)) {
+      throw new IndexOutOfBoundsException();
+    }
+    for (int i = startRow; i < endRow; i++) {
+      for (int j = startCol; j < endCol; j++) {
+        this.contents[i][j] = val;
+      }
+    }
   } // fillRegion(int, int, int, int, T)
 
   /**
@@ -324,7 +335,14 @@ public class MatrixV0<T> implements Matrix<T> {
    */
   public void fillLine(int startRow, int startCol, int deltaRow, int deltaCol,
       int endRow, int endCol, T val) {
-    // STUB
+    if ((startRow < 0) || (startCol < 0) || (endRow > this.height) || (endCol > this.width)) {
+      throw new IndexOutOfBoundsException();
+    }
+    for (int i = startRow; i < endRow; i += deltaRow) {
+      for (int j = startCol; j < endCol; j += deltaCol) {
+        this.contents[i][j] = val;
+      }
+    }
   } // fillLine(int, int, int, int, int, int, T)
 
   /**
@@ -335,7 +353,7 @@ public class MatrixV0<T> implements Matrix<T> {
    * @return a copy of the matrix.
    */
   public Matrix clone() {
-    MatrixV0 copy = new MatrixV0(this.width, this.height);
+    MatrixV0<T> copy = new MatrixV0<T>(this.width, this.height);
     for (int i = 0; i < this.height; i++) {
       for (int j = 0; j < this.width; j++) {
         copy.set(i, j, this.contents[i][j]);
