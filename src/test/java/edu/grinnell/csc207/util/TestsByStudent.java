@@ -28,7 +28,7 @@ public class TestsByStudent {
     test.set(0, 2, "orange");
     test.set(1, 1, "banana");
 
-    assertMatrixEquals(new String[][] {{"apple", null, "orange", null, "banana", null}}, test,
+    assertMatrixEquals(new String[][] {{"apple", null, "orange"}, {null, "banana", null}}, test,
     "Correct matrix after setting");
 
     assertEquals("apple", test.get(0,0), "Gets correct value 1");
@@ -53,14 +53,14 @@ public class TestsByStudent {
     test.set(1, 1, "banana");
 
     test.insertRow(0);
-    assertMatrixEquals(new String[][] {{null, null, null, "apple", null, "orange", null, "banana", null}}, test, 
+    assertMatrixEquals(new String[][] {{null, null, null}, {"apple", null, "orange"}, {null, "banana", null}}, test, 
     "Correct matrix after inserting row at beginning");
 
     assertEquals(3, test.width(), "Gets correct width after inserting row at beginning");
     assertEquals(3, test.height(), "Gets correct height after inserting row at beginning");
 
     test.insertRow(3);
-    assertMatrixEquals(new String[][] {{null, null, null, "apple", null, "orange", null, "banana", null, null, null, null}}, test, 
+    assertMatrixEquals(new String[][] {{null, null, null}, {"apple", null, "orange"}, {null, "banana", null}, {null, null, null}}, test, 
     "Correct matrix after inserting row at end");
 
     assertEquals(3, test.width(), "Gets correct width after inserting row at end");
@@ -72,18 +72,18 @@ public class TestsByStudent {
     test2.set(1, 1, "banana");
 
     test2.insertRow(0, new String [] {"x", "x", "x"});
-    assertMatrixEquals(new String[][] {{"x", "x", "x", "apple", null, "orange", null, "banana", null}}, test2, 
+    assertMatrixEquals(new String[][] {{"x", "x", "x"}, {"apple", null, "orange"}, {null, "banana", null}}, test2, 
     "Correct matrix after inserting row of values at beginning");
 
     assertEquals(3, test2.width(), "Gets correct width after inserting row at beginning");
     assertEquals(3, test2.height(), "Gets correct height after inserting row at beginning");
 
     test2.insertRow(3, new String [] {"x", "x", "x"});
-    assertMatrixEquals(new String[][] {{"x", "x", "x", "apple", null, "orange", null, "banana", null, "x", "x", "x"}}, test2, 
+    assertMatrixEquals(new String[][] {{"x", "x", "x"}, {"apple", null, "orange"}, {null, "banana", null}, {"x", "x", "x"}}, test2, 
     "Correct matrix after inserting row of values at end");
 
     assertEquals(3, test2.width(), "Gets correct width after inserting row at end");
-    assertEquals(3, test2.height(), "Gets correct height after inserting row at end");
+    assertEquals(4, test2.height(), "Gets correct height after inserting row at end");
   } // testInsertRow()
 
   /**
@@ -97,14 +97,14 @@ public class TestsByStudent {
     test.set(1, 1, "banana");
 
     test.insertCol(0);
-    assertMatrixEquals(new String[][] {{null, "apple", null, "orange", null, null, "banana", null}}, test, 
+    assertMatrixEquals(new String[][] {{null, "apple", null, "orange"}, {null, null, "banana", null}}, test, 
     "Correct matrix after inserting col at beginning");
 
     assertEquals(4, test.width(), "Gets correct width after inserting col at beginning");
     assertEquals(2, test.height(), "Gets correct height after inserting col at beginning");
 
-    test.insertCol(3);
-    assertMatrixEquals(new String[][] {{null, "apple", null, "orange", null, null, null, "banana", null, null}}, test, 
+    test.insertCol(4);
+    assertMatrixEquals(new String[][] {{null, "apple", null, "orange", null}, {null, null, "banana", null, null}}, test, 
     "Correct matrix after inserting col at end");
 
     assertEquals(5, test.width(), "Gets correct width after inserting col at end");
@@ -116,18 +116,18 @@ public class TestsByStudent {
     test2.set(1, 1, "banana");
 
     test2.insertCol(0, new String[] {"x", "x"});
-    assertMatrixEquals(new String[][] {{"x", "apple", null, "orange", "x", null, "banana", null}}, test2, 
+    assertMatrixEquals(new String[][] {{"x", "apple", null, "orange"}, {"x", null, "banana", null}}, test2, 
     "Correct matrix after inserting col of values at beginning");
 
-    assertEquals(4, test.width(), "Gets correct width after inserting col at beginning");
-    assertEquals(2, test.height(), "Gets correct height after inserting col at beginning");
+    assertEquals(4, test2.width(), "Gets correct width after inserting col at beginning");
+    assertEquals(2, test2.height(), "Gets correct height after inserting col at beginning");
 
-    test2.insertCol(3, new String[] {"x", "x"});
-    assertMatrixEquals(new String[][] {{"x", "apple", null, "orange", "x", "x", null, "banana", null, "x"}}, test2, 
+    test2.insertCol(4, new String[] {"x", "x"});
+    assertMatrixEquals(new String[][] {{"x", "apple", null, "orange", "x"}, {"x", null, "banana", null, "x"}}, test2, 
     "Correct matrix after inserting col of values at end");
 
-    assertEquals(5, test.width(), "Gets correct width after inserting col at end");
-    assertEquals(2, test.height(), "Gets correct height after inserting col at end");
+    assertEquals(5, test2.width(), "Gets correct width after inserting col at end");
+    assertEquals(2, test2.height(), "Gets correct height after inserting col at end");
   } // testInsertCol()
 
   /**
@@ -147,19 +147,19 @@ public class TestsByStudent {
     test.set(2, 2, Integer.valueOf(8));
 
     test.deleteRow(0);
-    assertMatrixEquals(new Integer[][] {{3,4,5,6,7,8}}, test, "Correctly deletes first row");
+    assertMatrixEquals(new Integer[][] {{3,4,5},{6,7,8}}, test, "Correctly deletes first row");
     assertEquals(2, test.height(), "Correct height after deleting row");
     
     test.insertRow(0, new Integer[] {0,1,2});
 
     test.deleteRow(2);
-    assertMatrixEquals(new Integer[][] {{0,1,2,3,4,5}}, test, "Correctly deletes last row");
+    assertMatrixEquals(new Integer[][] {{0,1,2},{3,4,5}}, test, "Correctly deletes last row");
     assertEquals(2, test.height(), "Correct height after deleting row");
 
     test.insertRow(2, new Integer[] {6,7,8});
 
     test.deleteRow(1);
-    assertMatrixEquals(new Integer[][] {{0,1,2,6,7,8}}, test, "Correctly deletes middle row");
+    assertMatrixEquals(new Integer[][] {{0,1,2},{6,7,8}}, test, "Correctly deletes middle row");
     assertEquals(2, test.height(), "Correct height after deleting row");
   } // testDeleteRow()
 
@@ -180,19 +180,19 @@ public class TestsByStudent {
     test.set(2, 2, Integer.valueOf(8));
 
     test.deleteCol(0);
-    assertMatrixEquals(new Integer[][] {{1,2,4,5,7,8}}, test, "Correctly deletes first column");
+    assertMatrixEquals(new Integer[][] {{1,2},{4,5},{7,8}}, test, "Correctly deletes first column");
     assertEquals(2, test.width(), "Correct width after deleting column");
     
     test.insertCol(0, new Integer[] {0,3,6});
 
     test.deleteCol(2);
-    assertMatrixEquals(new Integer[][] {{0,1,3,4,6,7}}, test, "Correctly deletes last column");
+    assertMatrixEquals(new Integer[][] {{0,1},{3,4},{6,7}}, test, "Correctly deletes last column");
     assertEquals(2, test.width(), "Correct width after deleting column");
     
     test.insertCol(2, new Integer[] {2,5,8});
 
     test.deleteCol(1);
-    assertMatrixEquals(new Integer[][] {{0,2,3,5,6,8}}, test, "Correctly deletes middle column");
+    assertMatrixEquals(new Integer[][] {{0,2},{3,5},{6,8}}, test, "Correctly deletes middle column");
     assertEquals(2, test.width(), "Correct width after deleting column");
     
     test.insertCol(1, new Integer[] {1,4,7});
@@ -212,7 +212,7 @@ public class TestsByStudent {
     test.set(2, 2, Integer.valueOf(8));
 
     test.fillRegion(0, 0, 3, 3, Integer.valueOf(9));
-    assertMatrixEquals(new Integer[][] {{9,9,9,9,9,9,9,9,9}}, test, "Correctly fills entire matrix");
+    assertMatrixEquals(new Integer[][] {{9,9,9},{9,9,9},{9,9,9}}, test, "Correctly fills entire matrix");
 
     Matrix<Integer> test2 = new MatrixV0<Integer>(3, 3);
     test2.set(0, 0, Integer.valueOf(0));
@@ -226,7 +226,7 @@ public class TestsByStudent {
     test2.set(2, 2, Integer.valueOf(8));
 
     test2.fillRegion(1, 0, 3, 2, Integer.valueOf(9));
-    assertMatrixEquals(new Integer[][] {{0,1,2,9,9,5,9,9,8}}, test2, "Correctly fills part of matrix");
+    assertMatrixEquals(new Integer[][] {{0,1,2},{9,9,5},{9,9,8}}, test2, "Correctly fills part of matrix");
   }
 
   @Test
@@ -242,8 +242,8 @@ public class TestsByStudent {
     test.set(2, 1, Integer.valueOf(7));
     test.set(2, 2, Integer.valueOf(8));
 
-    test.fillLine(0,1,0,0,3,1, Integer.valueOf(9));
-    assertMatrixEquals(new Integer[][] {{0,9,2,3,9,5,6,9,8}}, test, "Correctly fills vertical line");
+    test.fillLine(0,1,1,0,3,2, Integer.valueOf(9));
+    assertMatrixEquals(new Integer[][] {{0,9,2},{3,9,5},{6,9,8}}, test, "Correctly fills vertical line");
 
     Matrix<Integer> test2 = new MatrixV0<Integer>(3, 3);
     test2.set(0, 0, Integer.valueOf(0));
@@ -256,8 +256,8 @@ public class TestsByStudent {
     test2.set(2, 1, Integer.valueOf(7));
     test2.set(2, 2, Integer.valueOf(8));
 
-    test2.fillLine(1, 0, 0, 0, 1, 3, Integer.valueOf(9));
-    assertMatrixEquals(new Integer[][] {{0,1,2,9,9,9,6,7,8}}, test2, "Correctly fills horizontal line");
+    test2.fillLine(1, 0, 0, 1, 2, 3, Integer.valueOf(9));
+    assertMatrixEquals(new Integer[][] {{0,1,2},{9,9,9},{6,7,8}}, test2, "Correctly fills horizontal line");
 
     Matrix<Integer> test3 = new MatrixV0<Integer>(3, 3);
     test3.set(0, 0, Integer.valueOf(0));
@@ -271,7 +271,7 @@ public class TestsByStudent {
     test3.set(2, 2, Integer.valueOf(8));
 
     test3.fillLine(0, 0, 1, 1, 3, 3, Integer.valueOf(9));
-    assertMatrixEquals(new Integer[][] {{9,1,2,3,9,5,6,7,9}}, test3, "Correctly fills diagonal line");
+    assertMatrixEquals(new Integer[][] {{9,1,2},{3,9,5},{6,7,9}}, test3, "Correctly fills diagonal line");
   }
 
   /**
@@ -285,7 +285,7 @@ public class TestsByStudent {
     test1.set(1, 1, "banana");
 
     Matrix<String> test2 = test1.clone();
-    assertMatrixEquals(new String[][] {{"apple", null, "orange", null, "banana", null}}, test2,
+    assertMatrixEquals(new String[][] {{"apple", null, "orange"}, {null, "banana", null}}, test2,
     "Matrix clones correctly");
   } // testClone()
 

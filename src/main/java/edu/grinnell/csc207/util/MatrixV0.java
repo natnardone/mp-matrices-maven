@@ -29,6 +29,11 @@ public class MatrixV0<T> implements Matrix<T> {
    */
   int height;
 
+  /**
+   * The default value to return.
+   */
+  T defaultVal;
+
   // +--------------+------------------------------------------------
   // | Constructors |
   // +--------------+
@@ -53,6 +58,7 @@ public class MatrixV0<T> implements Matrix<T> {
     } else {
       this.width = width;
       this.height = height;
+      this.defaultVal = def;
       contents = (T[][]) new Object[height][];
       for (int i = 0; i < height; i++) {
         contents[i] = (T[]) new Object[width];
@@ -156,12 +162,12 @@ public class MatrixV0<T> implements Matrix<T> {
    */
   public void insertRow(int row) {
     T[] vals = (T[]) new Object[this.width];
-    java.util.Arrays.fill(vals, null);
+    java.util.Arrays.fill(vals, defaultVal);
     try {
       this.insertRow(row, vals);
     } catch (ArraySizeException e) {
       // should never reach this point
-    }
+    } // try/catch
   } // insertRow(int)
 
   /**
@@ -182,12 +188,12 @@ public class MatrixV0<T> implements Matrix<T> {
       throw new IndexOutOfBoundsException();
     } else if (vals.length != this.width) {
       throw new ArraySizeException();
-    }
+    } // if/else
     this.contents = java.util.Arrays.copyOf(this.contents, this.contents.length + 1);
     // move all array elements after the row inserted
     for (int i = this.height; i > row; i--) {
-      this.contents[i] = this.contents[i-1];
-    }
+      this.contents[i] = this.contents[i - 1];
+    } // for
     // new row contains specified values
     this.contents[row] = vals;
     this.height++;
@@ -204,12 +210,12 @@ public class MatrixV0<T> implements Matrix<T> {
    */
   public void insertCol(int col) {
     T[] vals = (T[]) new Object[this.height];
-    java.util.Arrays.fill(vals, null);
+    java.util.Arrays.fill(vals, defaultVal);
     try {
       this.insertCol(col, vals);
     } catch (ArraySizeException e) {
       // should never reach this point
-    }
+    } // try/catch
   } // insertCol(int)
 
   /**
@@ -230,14 +236,14 @@ public class MatrixV0<T> implements Matrix<T> {
       throw new IndexOutOfBoundsException();
     } else if (vals.length != this.height) {
       throw new ArraySizeException();
-    }
+    } // if/else
     for (int i = 0; i < this.height; i++) {
       this.contents[i] = java.util.Arrays.copyOf(this.contents[i], this.contents[i].length + 1);
       for (int j = this.width; j > col; j--) {
-        this.contents[j] = this.contents[j-1];
-      }
+        this.contents[i][j] = this.contents[i][j - 1];
+      } // for
       this.contents[i][col] = vals[i];
-    }
+    } // for
     this.width++;
   } // insertCol(int, T[])
 
@@ -253,11 +259,11 @@ public class MatrixV0<T> implements Matrix<T> {
   public void deleteRow(int row) {
     if ((row >= this.height) || (row < 0)) {
       throw new IndexOutOfBoundsException();
-    }
+    } // if
     this.height--;
     for (int i = row; i < this.height; i++) {
-      this.contents[i] = this.contents[i+1];
-    }
+      this.contents[i] = this.contents[i + 1];
+    } // for
     this.contents = java.util.Arrays.copyOf(this.contents, this.contents.length - 1);
   } // deleteRow(int)
 
@@ -273,14 +279,14 @@ public class MatrixV0<T> implements Matrix<T> {
   public void deleteCol(int col) {
     if ((col >= this.width) || (col < 0)) {
       throw new IndexOutOfBoundsException();
-    }
+    } // if
     this.width--;
     for (int i = 0; i < this.height; i++) {
       for (int j = col; j < this.width; j++) {
-        this.contents[i][j] = this.contents[i][j+1];
-      }
+        this.contents[i][j] = this.contents[i][j + 1];
+      } // for
       this.contents[i] = java.util.Arrays.copyOf(this.contents[i], this.contents[i].length - 1);
-    }
+    } // for
   } // deleteCol(int)
 
   /**
@@ -304,12 +310,12 @@ public class MatrixV0<T> implements Matrix<T> {
       T val) {
     if ((startRow < 0) || (startCol < 0) || (endRow > this.height) || (endCol > this.width)) {
       throw new IndexOutOfBoundsException();
-    }
+    } // if
     for (int i = startRow; i < endRow; i++) {
       for (int j = startCol; j < endCol; j++) {
         this.contents[i][j] = val;
-      }
-    }
+      } // for
+    } // for
   } // fillRegion(int, int, int, int, T)
 
   /**
@@ -337,12 +343,10 @@ public class MatrixV0<T> implements Matrix<T> {
       int endRow, int endCol, T val) {
     if ((startRow < 0) || (startCol < 0) || (endRow > this.height) || (endCol > this.width)) {
       throw new IndexOutOfBoundsException();
-    }
-    for (int i = startRow; i < endRow; i += deltaRow) {
-      for (int j = startCol; j < endCol; j += deltaCol) {
-        this.contents[i][j] = val;
-      }
-    }
+    } // if
+    for (int i = startRow, j = startCol; i < endRow && j < endCol; i += deltaRow, j += deltaCol) {
+      this.contents[i][j] = val;
+    } // for
   } // fillLine(int, int, int, int, int, int, T)
 
   /**
@@ -357,8 +361,8 @@ public class MatrixV0<T> implements Matrix<T> {
     for (int i = 0; i < this.height; i++) {
       for (int j = 0; j < this.width; j++) {
         copy.set(i, j, this.contents[i][j]);
-      }
-    }
+      } // for
+    } // for
     return copy;
   } // clone()
 
@@ -383,9 +387,15 @@ public class MatrixV0<T> implements Matrix<T> {
         // check if all contents are the same
         for (int i = 0; i < this.height; i++) {
           for (int j = 0; j < this.width; j++) {
-            if (!this.contents[i][j].equals(otherMatrix.get(i,j))) {
-              return false;
-            } // if
+            if ((this.contents[i][j] == null) || (otherMatrix.get(i, j) == null)) {
+              if (this.contents[i][j] != otherMatrix.get(i, j)) {
+                return false;
+              } // if
+            } else {
+              if (!this.contents[i][j].equals(otherMatrix.get(i, j))) {
+                return false;
+              } // if
+            } // if/else
           } // for
         } // for
         return true;

@@ -11,12 +11,13 @@ Authors:
 
 Overview:
 
-PLEASE PROVIDE AN OVERVIEW OF THE PROJECT FOR THOSE WHO MIGHT NOT
-OTHERWISE UNDERSTAND IT.
+A project implementing and testing matrices (two-dimensional arrays).
 
 ---
 
 Citations:
+
+Java Documentation for Arrays: <https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Arrays.html>
 
 ---
 
